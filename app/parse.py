@@ -33,10 +33,12 @@ def get_quotes(url: str) -> [Quote]:
     quotes = []
     while url:
         response = requests.get(url)
-        soup = BeautifulSoup(response.text, 'html.parser')
-        quotes.extend([parse_single_quote(quote) for quote in soup.select(".quote")])
+        soup = BeautifulSoup(response.text, "html.parser")
+        quotes.extend(
+            [parse_single_quote(quote) for quote in soup.select(".quote")]
+        )
         next_page = soup.select_one(".pager .next a")
-        url = urljoin(BASE_URL, next_page['href']) if next_page else None
+        url = urljoin(BASE_URL, next_page["href"]) if next_page else None
 
     return quotes
 
@@ -44,7 +46,7 @@ def get_quotes(url: str) -> [Quote]:
 def main(output_csv_path: str) -> None:
     quotes = get_quotes(BASE_URL)
 
-    with open(output_csv_path, 'w') as file:
+    with open(output_csv_path, "w") as file:
         writer = csv.writer(file)
         writer.writerow(QUOTE_FIELDS)
         writer.writerows([astuple(quote) for quote in quotes])
