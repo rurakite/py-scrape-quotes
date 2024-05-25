@@ -22,11 +22,7 @@ def parse_single_quote(quote_soup: BeautifulSoup) -> Quote:
     author = quote_soup.select_one(".author").text
     tags = [tag.text for tag in quote_soup.select(".tags .tag")]
 
-    return Quote(
-        text=text,
-        author=author,
-        tags=tags
-    )
+    return Quote(text=text, author=author, tags=tags)
 
 
 def get_quotes(url: str) -> [Quote]:
